@@ -141,6 +141,17 @@
   window.addEventListener("online", () => {
     if (img.src === IMAGE_BASE64 && !ONLINE_IMAGE_URL) setStatus("Showing image (built-in copy)", false);
   });
+
+  // Register the service worker so this page keeps working offline
+  // after the very first (online) visit — see service-worker.js for
+  // details on how the caching works.
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./service-worker.js").catch((err) => {
+        console.warn("Service worker registration failed:", err);
+      });
+    });
+  }
 </script>
 
 </body>
