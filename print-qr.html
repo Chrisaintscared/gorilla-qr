@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Print this QR code</title>
+
+<!--
+  This is the QR-ONLY page, meant for printing. It encodes PAGE_URL
+  below, which should be the address of your hosted index.html (the
+  photo page). Update PAGE_URL, then use your browser's Print
+  function (Ctrl/Cmd+P) on this page to print just the QR code.
+-->
+
+<style>
+  :root {
+    --ink: #1b1b1b;
+    --paper: #faf8f4;
+    --accent: #2f5d3a;
+    --muted: #6b6b63;
+    --warn: #a3541f;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 380px;
+    background: #ffffff;
+    border: 1px solid #e7e3da;
+    border-radius: 18px;
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  #qrcode {
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    display: inline-flex;
+    margin-bottom: 16px;
+  }
+
+  .instruction {
+    font-size: 0.9rem;
+    color: var(--muted);
+    max-width: 300px;
+    line-height: 1.5;
+    margin: 0 auto 20px;
+  }
+
+  .print-btn {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+  .print-btn:hover { opacity: 0.9; }
+
+  .setup-note {
+    margin-top: 18px;
+    font-size: 0.72rem;
+    color: #b3866a;
+    background: #fbf1ea;
+    border: 1px solid #f0ddce;
+    border-radius: 8px;
+    padding: 8px 10px;
+    text-align: left;
+    line-height: 1.4;
+  }
+
+  .setup-note code {
+    background: #fff;
+    padding: 1px 4px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+  }
+
+  /* When printing, hide everything except the QR code itself */
+  @media print {
+    .instruction, .print-btn, .setup-note { display: none; }
+    .card { box-shadow: none; border: none; }
+    body { padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div id="qrcode"></div>
+  <p class="instruction">
+    Scan this QR code to view the photo. It works online and offline!
+  </p>
+  <button class="print-btn" onclick="window.print()">Print this QR code</button>
+  <div class="setup-note" id="setupNote"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+  // The URL of your hosted photo page (index.html).
+  const PAGE_URL = "https://chrisaintscared.github.io/gorilla-qr/";
+
+  const qr = qrcode(0, "M");
+  qr.addData(PAGE_URL);
+  qr.make();
+  document.getElementById("qrcode").innerHTML = qr.createImgTag(8, 10);
+
+  if (PAGE_URL.includes("REPLACE-WITH-YOUR-HOSTED-LINK")) {
+    document.getElementById("setupNote").innerHTML =
+      "⚠️ Setup needed: this QR code currently points to a placeholder link. " +
+      "Edit <code>PAGE_URL</code> near the top of the script to your real " +
+      "hosted link before printing.";
+  }
+</script>
+
+</body>
+</html>
